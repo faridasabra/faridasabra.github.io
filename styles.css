@@ -680,12 +680,19 @@ footer {
         right: -100%;
         width: 70%;
         height: calc(100vh - 80px);
-        background-color: none;
+        background-color: var(--white-color) !important;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
         flex-direction: column;
         align-items: center;
         justify-content: center;
         transition: right 0.5s ease;
-        box-shadow: none;
+    }
+    body.dark-mode .nav-links {
+        background-color: var(--white-color) !important; /* Your dark mode background color */
+    }
+
+    body.dark-mode .burger div {
+        background-color: var(--dark-color);
     }
 
     .theme-toggle {
@@ -717,6 +724,14 @@ footer {
 
     .burger {
         display: block;
+    }
+
+    .burger div {
+        background-color: var(--dark-color);
+    }
+
+    .burger.active div {
+        background-color: var(--primary-color);
     }
 
     .burger.active .line1 {
