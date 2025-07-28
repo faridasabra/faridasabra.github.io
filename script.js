@@ -4,78 +4,69 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelector('.nav-links');
     const navItems = document.querySelectorAll('.nav-links li');
 
-    // Header scroll effect with light/dark mode support
-    const header = document.querySelector('header');
-    const body = document.body;
-    
-    function updateHeaderOnScroll() {
-        const isScrolled = window.scrollY > 50;
-        header.classList.toggle('scrolled', isScrolled);
-        
-        // Update logo and nav colors based on scroll and mode
-        const logo = document.querySelector('.logo a');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        const burgerLines = document.querySelectorAll('.burger div');
-        
-        if (body.classList.contains('dark-mode')) {
-            // Dark mode behavior
-            if (isScrolled) {
-                logo.style.color = 'var(--primary-color)';
-                navLinks.forEach(link => link.style.color = 'var(--dark-color)');
-                burgerLines.forEach(line => line.style.backgroundColor = 'var(--dark-color)');
-            } else {
-                logo.style.color = 'var(--white-color)';
-                navLinks.forEach(link => link.style.color = 'var(--white-color)');
-                burgerLines.forEach(line => line.style.backgroundColor = 'var(--white-color)');
-            }
-        } else {
-            // Light mode behavior
-            if (isScrolled) {
-                logo.style.color = 'var(--primary-color)';
-                navLinks.forEach(link => link.style.color = 'var(--dark-color)');
-                burgerLines.forEach(line => line.style.backgroundColor = 'var(--dark-color)');
-            } else {
-                logo.style.color = 'var(--white-color)';
-                navLinks.forEach(link => link.style.color = 'var(--white-color)');
-                burgerLines.forEach(line => line.style.backgroundColor = 'var(--white-color)');
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        // Extract all techs from all projects
+        const projectTechs = Array.from(document.querySelectorAll('.project-tech span')).map(span => span.textContent.toLowerCase());
+
+        // Tool groups to monitor (you can expand this list)
+        const skillMap = {
+            'TensorFlow': ['tensorflow', 'pytorch'],
+            'Pandas': ['pandas', 'numpy'],
+            'Seaborn': ['seaborn', 'matplotlib']
+        };
+
+        // Count occurrences for each skill group
+        const counts = {};
+        for (const [key, keywords] of Object.entries(skillMap)) {
+            counts[key] = keywords.reduce((sum, kw) => {
+                return sum + projectTechs.filter(t => t.includes(kw)).length;
+            }, 0);
         }
-    }
 
-    // Initial call and event listener
-    updateHeaderOnScroll();
-    window.addEventListener('scroll', updateHeaderOnScroll);
+        // Find max value to normalize
+        const maxCount = Math.max(...Object.values(counts), 1); // Avoid division by 0
 
-    // Rest of your existing code...
+        // Apply percentage widths
+        document.querySelectorAll('.skill-item').forEach(item => {
+            const skillName = item.getAttribute('data-skill');
+            const level = counts[skillName] || 0;
+            const percentage = Math.round((level / maxCount) * 100);
+            const bar = item.querySelector('.skill-level');
+            bar.style.width = percentage + '%';
+        });
+    });
+    
     burger.addEventListener('click', () => {
-        // Toggle menu and burger animation
+        // Toggle Nav
         navLinks.classList.toggle('active');
         burger.classList.toggle('active');
         
-        // Prevent scrolling when menu is open
-        document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        // Animate Links
+        navItems.forEach((link, index) => {
+            if (link.style.animation) {
+                link.style.animation = '';
+            } else {
+                link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
+            }
+        });
     });
-
 
     // Close mobile menu when clicking on a link
     navItems.forEach(item => {
         item.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-            burger.classList.remove('active');
-            document.body.style.overflow = '';
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                burger.classList.remove('active');
+                navItems.forEach(link => {
+                    link.style.animation = '';
+                });
+            }
         });
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.nav-links') && !e.target.closest('.burger') && navLinks.classList.contains('active')) {
-            navLinks.classList.remove('active');
-            burger.classList.remove('active');
-            document.body.style.overflow = '';
-        }
     });
 
     // Dark Mode Toggle Functionality
     const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
 
     // Check for saved user preference or use system preference
     const savedMode = localStorage.getItem('darkMode');
@@ -95,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function() {
             body.classList.remove('dark-mode');
             localStorage.setItem('darkMode', 'light');
         }
-        updateHeaderOnScroll(); // Update header colors when mode changes
     });
 
     // Update mobile menu colors in dark mode
@@ -116,6 +106,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (navLinks.classList.contains('active')) {
             updateMobileMenuColors();
         }
+    });
+
+    // Sticky Header
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 0);
     });
 
     // Project Filtering (Updated for Multi-Category Support)
