@@ -3,6 +3,38 @@ document.addEventListener('DOMContentLoaded', function() {
     const burger = document.querySelector('.burger');
     const navLinks = document.querySelector('.nav-links');
     const navItems = document.querySelectorAll('.nav-links li');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Extract all techs from all projects
+        const projectTechs = Array.from(document.querySelectorAll('.project-tech span')).map(span => span.textContent.toLowerCase());
+
+        // Tool groups to monitor (you can expand this list)
+        const skillMap = {
+            'TensorFlow': ['tensorflow', 'pytorch'],
+            'Pandas': ['pandas', 'numpy'],
+            'Seaborn': ['seaborn', 'matplotlib']
+        };
+
+        // Count occurrences for each skill group
+        const counts = {};
+        for (const [key, keywords] of Object.entries(skillMap)) {
+            counts[key] = keywords.reduce((sum, kw) => {
+                return sum + projectTechs.filter(t => t.includes(kw)).length;
+            }, 0);
+        }
+
+        // Find max value to normalize
+        const maxCount = Math.max(...Object.values(counts), 1); // Avoid division by 0
+
+        // Apply percentage widths
+        document.querySelectorAll('.skill-item').forEach(item => {
+            const skillName = item.getAttribute('data-skill');
+            const level = counts[skillName] || 0;
+            const percentage = Math.round((level / maxCount) * 100);
+            const bar = item.querySelector('.skill-level');
+            bar.style.width = percentage + '%';
+        });
+    });
     
     burger.addEventListener('click', () => {
         // Toggle Nav

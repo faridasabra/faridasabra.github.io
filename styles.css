@@ -216,7 +216,7 @@ nav {
 
 /* ===== DARK MODE STYLES ===== */
 body.dark-mode {
-    --primary-color: #A165AD; /* Glowing lilac (buttons, interactive elements) */
+    --primary-color: #b399d4; /* Glowing lilac (buttons, interactive elements) */
     --secondary-color: #9a7fcb; /* Muted lilac (secondary accents) */
     --accent-color: #ffb7c5; /* Soft pink (kept for playful contrast) */
     --light-color: #2a2139; /* Deep purple base (replaces white) */
@@ -674,29 +674,72 @@ footer {
 }
 
 @media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .project-card {
+        max-width: 100%;
+    }
+    
+    .filter-btn {
+        padding: 6px 15px;
+        font-size: 0.8rem;
+        margin: 0 5px 5px 0;
+    }
+
+    .container {
+        width: 95%;
+        padding: 0 15px;
+    }
+
+    html {
+        font-size: 14px;
+    }
+    
+    body {
+        line-height: 1.5;
+        overflow-x: hidden;
+    }
+    
+    .stat-item h3 {
+        font-size: 2rem;
+    }
+
+    header {
+        padding: 15px 0;
+    }
+
     .nav-links {
         position: fixed;
-        top: 80px;
+        top: 70px;
         right: -100%;
-        width: 70%;
-        height: calc(100vh - 80px);
+        width: 80%;
+        height: calc(100vh - 70px);
         background-color: var(--white-color) !important;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px); /* Adds frosted glass effect */
         flex-direction: column;
         align-items: center;
         justify-content: center;
         transition: right 0.5s ease;
     }
+
     body.dark-mode .nav-links {
         background-color: var(--white-color) !important; /* Your dark mode background color */
     }
 
+    body.dark-mode .nav-links a {
+        color: var(--dark-color);
+    }
+
     body.dark-mode .burger div {
-        background-color: var(--dark-color);
+        background-color: var(--primary-color);
     }
 
     .theme-toggle {
-        margin-left: 20px;
+        margin-left: 15px;
     }
     
     .toggle-label {
@@ -719,11 +762,19 @@ footer {
     }
 
     .nav-links li {
-        margin: 20px 0;
+        margin: 25px 0;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+        padding: 12px 0;
+        display: block;
     }
 
     .burger {
-        display: block;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
     }
 
     .burger div {
@@ -736,30 +787,99 @@ footer {
 
     .burger.active .line1 {
         transform: rotate(-45deg) translate(-5px, 6px);
+        background-color: var(--primary-color);
     }
 
     .burger.active .line2 {
         opacity: 0;
+        background-color: var(--primary-color);
     }
 
     .burger.active .line3 {
         transform: rotate(45deg) translate(-5px, -6px);
+        background-color: var(--primary-color);
+    }
+
+    section {
+        padding: 60px 0;
     }
 
     .section-title {
-        font-size: 2rem;
+        margin-bottom: 40px;
+        font-size: 1.8rem;
+    }
+
+    .section-title::after {
+        bottom: -12px;
+        height: 3px;
+    }
+
+    .social-links a {
+        width: 48px;
+        height: 48px;
+    }
+
+    .hero {
+        padding-top: 70px;
+        height: auto;
+        min-height: 100vh;
     }
 
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        line-height: 1.2;
     }
 
     .hero-content h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .hero .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .about-stats {
         grid-template-columns: 1fr;
+    }
+
+    .about-links {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .btn-outline {
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    
+    /* Optional: Adjust button width if needed */
+    .about-links .btn {
+        flex: 1; /* Makes buttons equal width */
+        min-width: 140px; /* Minimum width */
+        text-align: center;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        padding: 12px;
+    }
+    
+    .contact-content {
+        gap: 30px;
     }
 }
 
@@ -774,6 +894,16 @@ footer {
 
     .hero-image img {
         max-width: 300px;
+    }
+}
+
+@media (hover: none) {
+    .btn:active {
+        transform: scale(0.98);
+    }
+    
+    .nav-links a:active {
+        color: var(--accent-color);
     }
 }
 
