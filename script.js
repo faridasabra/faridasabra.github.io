@@ -31,49 +31,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
     // Dark Mode Toggle Functionality
-const darkModeToggle = document.getElementById('darkModeToggle');
-const body = document.body;
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
 
-// Check for saved user preference or use system preference
-const savedMode = localStorage.getItem('darkMode');
-const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // Check for saved user preference or use system preference
+    const savedMode = localStorage.getItem('darkMode');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-if (savedMode === 'dark' || (!savedMode && systemPrefersDark)) {
-    body.classList.add('dark-mode');
-    darkModeToggle.checked = true;
-}
-
-// Toggle dark mode
-darkModeToggle.addEventListener('change', function() {
-    if (this.checked) {
+    if (savedMode === 'dark' || (!savedMode && systemPrefersDark)) {
         body.classList.add('dark-mode');
-        localStorage.setItem('darkMode', 'dark');
-    } else {
-        body.classList.remove('dark-mode');
-        localStorage.setItem('darkMode', 'light');
+        darkModeToggle.checked = true;
     }
-});
 
-// Update mobile menu colors in dark mode
-function updateMobileMenuColors() {
-    const navLinks = document.querySelector('.nav-links');
-    if (body.classList.contains('dark-mode')) {
-        navLinks.style.backgroundColor = '#2d3748';
-    } else {
-        navLinks.style.backgroundColor = 'var(--white-color)';
+    // Toggle dark mode
+    darkModeToggle.addEventListener('change', function() {
+        if (this.checked) {
+            body.classList.add('dark-mode');
+            localStorage.setItem('darkMode', 'dark');
+        } else {
+            body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'light');
+        }
+    });
+
+    // Update mobile menu colors in dark mode
+    function updateMobileMenuColors() {
+        const navLinks = document.querySelector('.nav-links');
+        if (body.classList.contains('dark-mode')) {
+            navLinks.style.backgroundColor = '#2d3748';
+        } else {
+            navLinks.style.backgroundColor = 'var(--white-color)';
+        }
     }
-}
 
-// Call this when toggling dark mode
-darkModeToggle.addEventListener('change', updateMobileMenuColors);
+    // Call this when toggling dark mode
+    darkModeToggle.addEventListener('change', updateMobileMenuColors);
 
-// Also call when opening mobile menu
-burger.addEventListener('click', function() {
-    if (navLinks.classList.contains('active')) {
-        updateMobileMenuColors();
-    }
-});
+    // Also call when opening mobile menu
+    burger.addEventListener('click', function() {
+        if (navLinks.classList.contains('active')) {
+            updateMobileMenuColors();
+        }
+    });
 
     // Sticky Header
     const header = document.querySelector('header');
@@ -81,30 +82,56 @@ burger.addEventListener('click', function() {
         header.classList.toggle('scrolled', window.scrollY > 0);
     });
 
-
-    // Project Filtering
+    // Project Filtering (Updated for Multi-Category Support)
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
     
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             // Remove active class from all buttons
-            filterBtns.forEach(btn => btn.classList.remove('active'));
+            filterBtns.forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.opacity = '0.8';
+            });
             
             // Add active class to clicked button
             btn.classList.add('active');
+            btn.style.opacity = '1';
             
             const filter = btn.getAttribute('data-filter');
             
-            projectCards.forEach(card => {
-                if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+            // Animate project cards
+            projectCards.forEach((card, index) => {
+                setTimeout(() => {
+                    const categories = card.getAttribute('data-category').split(' ');
+                    
+                    if (filter === 'all' || categories.includes(filter)) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.5s ease forwards';
+                    } else {
+                        card.style.animation = 'fadeOut 0.3s ease forwards';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                }, index * 50);
             });
         });
     });
+
+    // Add CSS animations dynamically
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(20px); }
+        }
+    `;
+    document.head.appendChild(style);
 
     // Smooth Scrolling for Anchor Links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
