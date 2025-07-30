@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    cursor: url('.../images/cursor.png'), auto;
     font-family: "Roboto Mono", monospace;
     display: flex; /* Keep flex for overall column layout */
     flex-direction: column;
@@ -294,7 +295,7 @@ h1 {
     border: 2px solid #000;
     border-radius: 5px;
     background-color: #ddd;
-    color: #000; / Black text /
+    color: #000;
     text-decoration: none;
 }
 
