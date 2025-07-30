@@ -1,6 +1,5 @@
 body {
     margin: 0;
-    cursor: url('.../images/cursor.png'), auto;
     font-family: "Roboto Mono", monospace;
     display: flex; /* Keep flex for overall column layout */
     flex-direction: column;
@@ -17,6 +16,7 @@ body {
     background-size: 36px 36px;
     background-position: 0 0,18px 18px;
     /* --- END BACKGROUND PATTERN ADDITION --- */
+    cursor: url('images/cursor.svg') 0 0, auto;
     }
 
 a {
@@ -54,7 +54,7 @@ a:hover {
 
 .card {
     background-color: #ffffff;
-    border: 1px solid #ddd;
+    border: 2px solid #000; /* Assuming you added this border previously */
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     width: 800px; /* <--- INCREASE THIS VALUE (e.g., from 600px to 800px or more) */
@@ -64,9 +64,20 @@ a:hover {
     z-index: 2;
 }
 
+.top-left-cat {
+    position: absolute;
+    top: -56px;
+    right: 45px;
+    width: 100px;
+    height: auto;
+    z-index: 3;
+    pointer-events: none;
+}
+
 .nav-bar {
     background-color: #ff69b4;
     color: #ffffff;
+    border-bottom: 1px solid #333;
     padding: 10px 20px;
     font-size: 1.1em;
     font-family: "Roboto Mono", monospace; /* Use a distinct font for nav */
@@ -284,6 +295,15 @@ h1 {
     border-bottom: 1px solid #333;
     /* Cursor property specifically for header to indicate grab */
     cursor: grab;
+    cursor: url('images/cursor.svg') 0 0, auto;
+}
+
+.modal-header.dragging { /* Add this class to the modal-header via JavaScript when dragging starts */
+    cursor: url('images/cursor.svg') 0 0, grabbing; /* Custom SVG for grabbing, with 'grabbing' as fallback */
+}
+
+a, button, .close-button, .icon-item {
+    cursor: url('images/cursor.svg') 0 0, pointer; /* Custom SVG for pointer, with 'pointer' as fallback */
 }
 
 .close-button {
