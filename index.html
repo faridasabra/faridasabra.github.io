@@ -145,24 +145,25 @@
         </div>
     </div>
 
-    <div id="workWindow" class="modal-window hidden" data-title="work">
+    <div id="workWindow" class="modal-window work-modal hidden" data-title="work">
         <div class="modal-header">
             <span class="modal-title">work</span>
             <span class="close-button">×</span>
         </div>
+        
         <div class="modal-content-scrollable">
             <h3>PROJECTS</h3>
             <div class="gallery-grid">
-                <a href="https://github.com/yourprofile/project1" target="_blank">
-                    <img src="images/iris.jpg" alt="Data Project 1">
+                <a href="https://github.com/faridasabra/iris-flower-classification" target="_blank">
+                    <img src="images/iris.png" alt="Data Project 1">
                     <p>Iris Flower Classification</p>
                 </a>
-                <a href="https://github.com/yourprofile/project2" target="_blank">
-                    <img src="images/titanic.jpg" alt="Data Project 2">
+                <a href="https://github.com/faridasabra/titanic-prediction" target="_blank">
+                    <img src="images/titanic.png" alt="Data Project 2">
                     <p>Titanic Predictive Model</p>
                 </a>
-                <a href="https://github.com/yourprofile/project3" target="_blank">
-                    <img src="images/cat.jpg" alt="Data Project 3">
+                <a href="https://github.com/faridasabra/cat-and-dog-image-classification" target="_blank">
+                    <img src="images/cat.png" alt="Data Project 3">
                     <p>Cat and Dog Image Classification</p>
                 </a>
             </div>
@@ -348,7 +349,28 @@
                     }
                 });
 
-                
+                const workWindow = document.getElementById('workWindow');
+                if (workWindow) {
+                    const difficultyFilter = workWindow.querySelector('#difficulty-filter');
+                    // Select all project-item elements within the work window's gallery grid
+                    const projectItems = workWindow.querySelectorAll('.gallery-grid .project-item');
+
+                    if (difficultyFilter) {
+                        difficultyFilter.addEventListener('change', (event) => {
+                            const selectedDifficulty = event.target.value; // 'all', 'easy', 'medium', 'hard'
+
+                            projectItems.forEach(item => {
+                                const itemDifficulty = item.dataset.difficulty; // Get difficulty from data attribute
+
+                                if (selectedDifficulty === 'all' || itemDifficulty === selectedDifficulty) {
+                                    item.classList.remove('hidden'); // Show the item
+                                } else {
+                                    item.classList.add('hidden'); // Hide the item
+                                }
+                            });
+                        });
+                    }
+                }
 
                 // Close button functionality with reverse animation
                 if (closeButton) {
